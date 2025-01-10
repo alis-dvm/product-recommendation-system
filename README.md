@@ -1,23 +1,25 @@
 # product-recommendation-system
-*dalam proses pembuatan (belum selesai)*
+
 
 ## **Project Overview**
-Dalam proyek ini, kami membangun sistem rekomendasi produk, dari situs web e-commerce, menggunakan pendekatan *Content-Based Filtering* dan *Collaborative Filtering* untuk membantu pengguna menemukan produk yang relevan berdasarkan preferensi/ riwayat pembelian dan perilaku penelusuran mereka
+Sistem rekomendasi sangat penting dalam mempersonalisasi pengalaman pengguna di berbagai domain, seperti e-commerce, film, dan pasar kerja. Dalam proyek ini, kami membangun sistem rekomendasi produk, dari situs web e-commerce. Pendekatan yang kami guanakan adalah *Content-Based Filtering* dan *Collaborative Filtering*, dalam rangka membantu pengguna menemukan produk yang relevan berdasarkan preferensi/ riwayat pembelian dan perilaku penelusuran mereka
 
 1. Content-Based Filtering yaitu menganalisis karakteristik produk untuk memberikan rekomendasi berdasarkan kesamaan dengan produk lain.
 2. Collaborative Filtering yaitu menggunakan data interaksi pengguna untuk merekomendasikan produk yang diminati oleh pengguna serupa.
 
 ## **Business Understanding**
 **Problem Statements**<br>
-Pengguna sering menghadapi tantangan dalam memilih produk yang tepat karena banyaknya pilihan yang ada, yang sesuai untuk kondisi mereka. Oleh karena itu, penting untuk menciptakan sistem rekomendasi yang dapat membantu pengguna dalam memilih produk yang tepat dan relevan, dimana pengguna puas, sekaligus dapat meningkatkan penjualan & profit perusahaan.
+Perilaku konsumen berubah karena perkembangan era digital yang semakin modern. Mereka sebelumnya melakukan transaksi di toko fisik tetapi sekarang beralih ke toko online atau e-commerce. Perubahan ini memiliki dampak dalam cara pelanggan berpikir tentang produk yang mereka beli. Pengguna dapat memilih untuk membeli produk berdasarkan berbagai faktor, seperti harga, kualitas produk, promosi, dan bahkan perusahaan yang mereka tuju.
+
+Salah satu faktor yang mendorong marketplace mengalami pertumbuhan yang pesat adalah fitur-fitur yang ditawarkan oleh perusahaan yang sangat inovatif dan dapat menarik minat pelanggan untuk terus membeli produk di marketplace tersebut. Di antara banyak fitur yang ditawarkan oleh marketplace, fitur sistem rekomendasi menjadi salah satu yang sangat berpengaruh terhadap keputusan pembeli untuk membeli suatu produk. Pengguna sering menghadapi tantangan dalam memilih produk yang tepat karena banyaknya pilihan yang ada, yang sesuai untuk kondisi mereka [[1]](https://doi.org/10.1117/12.3013353). Oleh karena itu, penting untuk menciptakan sistem rekomendasi yang dapat membantu pengguna dalam memilih produk yang tepat dan relevan, dimana pengguna puas, sekaligus dapat meningkatkan penjualan & profit perusahaan [[2]](https://doi.org/10.1509/jmkg.73.2.55).
 
 **Goals**<br>
 1. Mengembangkan sistem rekomendasi produk yang dapat memberikan saran produk yang lebih tepat berdasarkan data produk, konsumen dan pengalaman pengguna lain.
 2. Membantu konsumen dalam memilih produk yang lebih sesuai dan memuaskan, sekaligus meningkatkan penjualan produk dari perusahaan, dengan memanfaatkan pendekatan algoritma Content-Based Filtering dan Collaborative Filtering.
 
 **Solution Approach**<br>
-* Content-Based Filtering digunakan untuk memberikan rekomendasi item yang serupa dengan apa yang pernah dibeli atau dilihat pengguna sebelumnya berdasarkan detail karakteristik/ atribut produk, seperti kategori, merek, harga dan diskripsi produk.
-* Collaborative Filtering digunakan untuk memberikan rekomendasi dari data perilaku konsumen untuk mengidentifikasi pola berdasarkan rating dan preferensi pengguna lain yang memiliki riwayat pembelian sebelumnya.
+* Content-Based Filtering digunakan untuk memberikan rekomendasi item yang serupa dengan apa yang pernah dibeli atau dilihat pengguna sebelumnya berdasarkan detail karakteristik/ atribut produk, seperti kategori, merek, harga dan diskripsi produk [[3]](https://doi.org/10.35806/ijoced.v6i1.393).
+* Collaborative Filtering digunakan untuk memberikan rekomendasi dari data perilaku konsumen untuk mengidentifikasi pola berdasarkan rating dan preferensi pengguna lain yang memiliki riwayat pembelian sebelumnya [[4]](https://doi.org/10.48550/arXiv.2409.19262) & [[5]](https://doi.org/10.18280/jesa.570421).
 
 ## **Data Understanding**
 **Exploratory Data Analysis (EDA) & Data Visualization**<br>
@@ -40,16 +42,16 @@ Dalam proyek ini, kami menggunakan dataset yang berasal dari database "Bigbasket
 **2. Struktur dataset**<br>
 Dataset terdiri dari 10 kolom dengan 27555 baris. Mayoritas kolom bertipe ```object``` dan sebagian bertipe ```float64``` kecuali kolom *index* bertipe ```int64```. Berikut detail variabel fitur dataset ini:<br>
 
-- ```index```: Nama obat yang digunakan.
-- ```product```: Nama produk (dapat digunakan untuk deskripsi dalam Content-Based Filtering).
+- ```index```: Nomor urut atau identifikasi unik untuk setiap baris dalam dataset.
+- ```product```: Nama produk.
 - ```category```: Kategori utama produk.
 - ```sub_category```: Sub-kategori produk.
 - ```brand```: Merek produk.
 - ```sale_price```: Harga jual produk diplatform e-commerce.
 - ```market_price```: Harga produk dipasaran.
 - ```type```: Tipe produk (lebih spesifik dibanding kategori/sub-kategori).
-- ```rating```: Rating pengguna (berguna untuk evaluasi Collaborative Filtering).
-- ```description```: Deskripsi produk (fitur utama untuk Content-Based Filtering).
+- ```rating```: Rating pengguna.
+- ```description```: Deskripsi produk.
 ```
 RangeIndex: 27555 entries, 0 to 27554
 Data columns (total 10 columns):
@@ -114,6 +116,8 @@ Kolom *rating* memiliki nilai yang hilang yang paling tinggi (8626 nilai kosong,
 
 ![vis kategori](https://github.com/user-attachments/assets/11780fc7-c6ca-4aa8-bf3a-a3dba16c05af)
 
+Jumlah item terbanyak dalam kolom ```category``` adalah produk dalam kategori "Beauty & Hygiene", diikuti dengan peringkat kedua terbanyak adalah produk dalam kategori "Gourmet & World Food".
+
 **7. Visualisasi 10 produk terlaris**
 
 | No. | Product                          | Category                    | Count |
@@ -131,6 +135,8 @@ Kolom *rating* memiliki nilai yang hilang yang paling tinggi (8626 nilai kosong,
 
 ![vis produk laris](https://github.com/user-attachments/assets/87cd61a7-732b-4b27-83ca-8d27c5b2ae7f)
 
+Produk yang paling banyak terjual adalah yang berhubungan dengan persipan pembuatan masakan, yaitu bumbu seperti kunyit "Turmeric Powder/Arisina Pudi" & ketumbar "Coriander Powder". Selain itu minyak "Extra Virgin Olive Oil" & ghee juga terlaris penjualannya.
+
 **8. Daftar 10 produk yang paling sedikit terjual**
 
 | No. | Product                                     | Category                | Count |
@@ -145,6 +151,8 @@ Kolom *rating* memiliki nilai yang hilang yang paling tinggi (8626 nilai kosong,
 | 7   | Gentleman Urbane Deodorant                  | Beauty & Hygiene        | 1     |
 | 8   | Gentleman Urbane - Eau De Parfum For Men    | Beauty & Hygiene        | 1     |
 | 9   | Pasta Shell                                 | Snacks & Branded Foods  | 1     |
+
+Produk yang paling sedikit terjual adalah kotak geometri "Geometry Box" yang kesemuanya masuk dalam kategori "Cleaning & Household". Selain itu beberapa produk kebersihan seperti sikat, deodoran dan parfum serta produk makan kulit pasta "Pasta Shell" juga yang paling tidak laku terjual.
 
 **9. Produk unggulan (rating 5) berbasis kategori**
 
@@ -165,6 +173,8 @@ Kolom *rating* memiliki nilai yang hilang yang paling tinggi (8626 nilai kosong,
 
 ![Top ratingl](https://github.com/user-attachments/assets/de593494-0a74-4d67-9aff-1c9fc3b96455)
 
+Terdapat 1.407 produk dengan rating tertinggi yaitu rating 5 dari 27.555 produk. Dari sekitar 5 % produk tersebut kategori "Beauty & Hygiene" merupakan produk terbanyak, diikuti dengan peringkat kedua produk dalam kategori "Gourmet & World Food".
+
 **10. Produk dengan rating terendah "1" berbasis kategori**
 
 | Index  | Product                                        | Category               | Sub-Category              | Brand             | Sale Price | Market Price | Type                      | Rating | Description                                    |
@@ -183,6 +193,8 @@ Kolom *rating* memiliki nilai yang hilang yang paling tinggi (8626 nilai kosong,
 387 rows × 10 columns
 
 ![bottom kategori](https://github.com/user-attachments/assets/874ec2b8-67f5-45f6-8af8-563be44f1004)
+
+Terdapat 387 produk dengan rating terendah yaitu rating 1 dari 27.555 produk. Yang menarik dari sekitar 1,4 % produk tersebut, kategori "Beauty & Hygiene" merupakan produk dengan rating terendah, diikuti dengan produk dalam kategori "Kitchen, Garden & Pets" dan "Gourmet & World Food".
 
 ## **Data Preparation**
 **1. Dropping Uneeded Column**<br>
@@ -403,6 +415,19 @@ Untuk mengevaluasi kedua model rekomendasi ini, kita dapat menggunakan precision
 ![evaluasiCF](https://github.com/user-attachments/assets/9d90f243-88d4-4687-91a7-f4763a08f96b)
 
 ### **References**
+[1] Nianjiao, P., Xunyong Xiao, Wu Di, Li Ang, Manhong Wen. (2024). Design and implementation of an intelligent recommendation system for product information on an e-commerce platform based on machine learning. Proc. SPIE 12937, International Conference on Internet of Things and Machine Learning (IoTML 2023), 129371K. https://doi.org/10.1117/12.3013353<br>
+
+[2] Huang, P., Lurie, N. H., & Mitra, S. (2009). Searching for Experience on the Web: An Empirical Examination of Consumer Behavior for Search and Experience Goods. Journal of Marketing, 73(2), 55-69. https://doi.org/10.1509/jmkg.73.2.55
+
+[3] Pebrianti, D, D. Ahmad, L. Bayuaji, L. Wijayanti, & M. Mulyadi. (2024). Using Content-Based Filtering and Apriori for Recommendation Systems in a Smart Shopping System. Indonesian Journal of Computing, Engineering, and Design (IJoCED), vol. 6, no. 1, Apr. 2024, pp. 58-70, https://doi.org/10.35806/ijoced.v6i1.393<br>
+
+[4] Hasan, Mahamudul. (2024). An Efficient Multi-threaded Collaborative Filtering Approach in Recommendation System. arXiv:2409.19262v1. https://doi.org/10.48550/arXiv.2409.19262<br>
+
+[5] Patil, P., Kadam, S.U., Aruna, E.R., More, A., M., B.R., Rao, B.N.K. (2024). Recommendation system for e-commerce using collaborative filtering. Journal Européen des Systèmes Automatisés, Vol. 57, No. 4, pp. 1145-1153. https://doi.org/10.18280/jesa.570421<br>
+
+
+
+
 
 
 
