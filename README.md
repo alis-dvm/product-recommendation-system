@@ -420,7 +420,7 @@ Membagi data menjadi set pelatihan dan set pengujian untuk evaluasi model. Train
      array([0.75 , 0.575, 0.625, ..., 1.   , 0.5  , 0.45 ])
      ```
 
-## **Modeling**
+## **Modeling and Results**
 Sistem rekomendasi adalah alat penting dalam berbagai domain, termasuk e-commerce, layanan kesehatan, dan hiburan, untuk membantu pengguna menemukan informasi atau item yang relevan. Dua pendekatan utama yang digunakan dalam pengembangan sistem ini adalah Content-Based Filtering dan Collaborative Filtering. Setiap pendekatan memiliki mekanisme, keunggulan, dan tantangan yang unik, yang penting untuk dipertimbangkan dalam membangun sistem rekomendasi produk.<br>
 
 **A. Content-Based Filtering** <br>
