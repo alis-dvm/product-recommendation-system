@@ -2,7 +2,7 @@
 
 
 ## **Project Overview**
-Sistem rekomendasi sangat penting dalam mempersonalisasi pengalaman pengguna di berbagai domain, seperti e-commerce, film, dan pasar kerja. Dalam proyek ini, kami membangun sistem rekomendasi produk, dari situs web e-commerce. Pendekatan yang kami guanakan adalah *Content-Based Filtering* dan *Collaborative Filtering*, dalam rangka membantu pengguna menemukan produk yang relevan berdasarkan preferensi/ riwayat pembelian dan perilaku penelusuran mereka
+Sistem rekomendasi sangat penting dalam mempersonalisasi pengalaman pengguna di berbagai domain, seperti e-commerce, film, dan pasar kerja. Dalam proyek ini, kami membangun sistem rekomendasi produk, dari situs web e-commerce. Pendekatan yang kami gunakan adalah *Content-Based Filtering* dan *Collaborative Filtering*, dalam rangka membantu pengguna menemukan produk yang relevan berdasarkan preferensi/ riwayat pembelian dan perilaku penelusuran mereka.
 
 1. Content-Based Filtering yaitu menganalisis karakteristik produk untuk memberikan rekomendasi berdasarkan kesamaan dengan produk lain.
 2. Collaborative Filtering yaitu menggunakan data interaksi pengguna untuk merekomendasikan produk yang diminati oleh pengguna serupa.
