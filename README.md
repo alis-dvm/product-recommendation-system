@@ -112,13 +112,13 @@ Berdasarkan output tabel dibawah ini, kolom ```rating``` memiliki nilai yang hil
 - ```rating``` 		mempunyai 40 	nilai yang unik
 - ```description``` 	mempunyai 21944 nilai yang unik
 
-Berdasarkan informasi diatas, bila kolom index diabaikan, kolom ```product``` dan ```description``` memiliki nilai unik yang terbesar.<br>
+  Berdasarkan informasi diatas, bila kolom index diabaikan, kolom ```product``` dan ```description``` memiliki nilai unik yang terbesar.<br>
 
 **6. Visualisasi jumlah item disetiap kategori**
 
 ![vis kategori](https://github.com/user-attachments/assets/11780fc7-c6ca-4aa8-bf3a-a3dba16c05af)
 
-Berdasarkan visualisasi data diatas, jumlah item terbanyak dalam kolom ```category``` adalah produk dalam kategori "Beauty & Hygiene", diikuti dengan peringkat kedua terbanyak adalah produk dalam kategori "Gourmet & World Food".
+   Berdasarkan visualisasi data diatas, jumlah item terbanyak dalam kolom ```category``` adalah produk dalam kategori "Beauty & Hygiene", diikuti dengan peringkat kedua terbanyak adalah produk dalam kategori "Gourmet & World Food".
 
 **7. Visualisasi 10 produk terlaris**
 
@@ -211,7 +211,7 @@ Kita akan menghapus kolom yang tidak relevan, yaitu kolom (```index```) untuk an
 | Creme Soft Soap - For Hands & Body         | Beauty & Hygiene        | Bath & Hand Wash     | Nivea             | 162.0      | 162.0        | Bathing Bars & Soaps    | 4.4    | Nivea Creme Soft Soap gives your skin the best...                          |
 
 **2. Detection and Removal Duplicates**<br>
-Sebelum membangun model, kita akan memeriksa duplikasi dalam data dan menghapusnya untuk memastikan data yang digunakan tidak redundan. Hal ini dilakukan untuk meningkatkan kualitas data, yaitu menghindari bias, meningkatkan akurasi serta dapat juga mengurangi beban komputasi. Berikut hasil outputnya, sebelum dan sesudah perlakuan:
+Sebelum membangun model, kita akan memeriksa duplikasi dalam data dan menghapusnya untuk memastikan data yang digunakan tidak redundan. Hal ini dilakukan untuk meningkatkan kualitas data, yaitu menghindari bias, meningkatkan akurasi serta dapat juga mengurangi beban komputasi. Berikut hasil outputnya, sebelum dan sesudah perlakuan:<br>
 ```
 Total Duplicates : 354
 After remove Duplicates : 0
@@ -506,19 +506,167 @@ Pendekatan ini, menggunakan TF-IDF Vectorization dan Cosine Similarity untuk men
 | Dark Melody Coffee Beans Roasted | Chicory Powder                                          |
 | Dark Melody Coffee Beans Roasted | Green Coffee Beans - Unroasted Arabica                 |
 
-Proses penggunaan model, yang memakai pendekatan content based filtering berhasil dilakukan, dengan memberikan ```Top-N Recommendations``` dari input yang diberikan. Pada project ini, model berhasil memberikan rekomendasi produk aneka pilihan kopi berdasarkan input yang diberikan, yaitu ```Dark Melody Coffee Beans Roasted``` yang juga produk kopi.
+Proses penggunaan model, yang memakai pendekatan content based filtering berhasil dilakukan, dengan memberikan ```Top-N Recommendations``` dari input yang diberikan. Pada project ini, model berhasil memberikan rekomendasi produk aneka pilihan kopi berdasarkan input random yang diberikan, yaitu ```Dark Melody Coffee Beans Roasted``` yang juga produk kopi.
 
 
 **B. Collaborative Filtering**<br>
-Menggunakan class RecommenderNet untuk Collaborative Filtering.
+Collaborative filtering adalah pendekatan yang banyak digunakan dalam sistem rekomendasi produk, karena kemampuannya untuk memanfaatkan data interaksi pengguna dalam memprediksi preferensi dan menyarankan item, sehingga meningkatkan pengalaman dan keterlibatan pengguna. Sistem ini beroperasi dengan mengidentifikasi pola perilaku pengguna, seperti rating atau ulasan riwayat pembelian, untuk merekomendasikan produk yang disukai pengguna serupa. Metode ini sangat efektif di lingkungan dengan basis data pengguna yang besar, seperti platform e-commerce.<br>
 
+Kelebihan Collaborative Filtering<br>
+- **Customization**: Metode ini memberikan rekomendasi yang dipersonalisasi dengan menganalisis perilaku dan preferensi pengguna, serta mampu beradaptasi terhadap perubahan preferensi melalui pembaruan rekomendasi berbasis interaksi dan umpan balik terbaru [[4]](https://doi.org/10.48550/arXiv.2409.19262) & [[5]](https://doi.org/10.18280/jesa.570421).
+- **Informasi Keputusan Pengguna**: Sistem collaborative filtering yang efektif mampu meningkatkan tingkat konversi dan retensi pengguna secara signifikan, mendukung pengambilan keputusan pembelian yang terinformasi, serta memberikan kontribusi pada peningkatan penjualan dan kepuasan pelanggan dalam lanskap e-commerce yang kompetitif [[10]](https://doi.org/10.1109/IC2PCT60090.2024.10486625) & [[5]](https://doi.org/10.18280/jesa.570421).
+
+Kekurangan Collaborative Filtering<br>
+- **Sparsity**: Metode ini sering mengalami kendala dengan data yang terbatas, di mana interaksi item pengguna yang tidak mencukupi dapat menyebabkan rekomendasi yang tidak akurat [[5]](https://doi.org/10.18280/jesa.570421) & [[11]](https://doi.org/10.52783/jes.2059).
+- **Cold Start Problem**: Pengguna baru atau item dengan sedikit data interaksi menimbulkan tantangan, karena sistem tidak memiliki informasi yang cukup untuk membuat rekomendasi yang akurat [[12]](https://doi.org/10.3233/atde231237).<br>
+- **Kompleksitas Komputasi**: Kebutuhan untuk memproses volume data yang besar dapat menyebabkan tuntutan komputasi yang tinggi, meskipun ini dapat dikurangi dengan algoritma yang dioptimalkan dan pemrosesan paralel [[4]](https://doi.org/10.48550/arXiv.2409.19262) & [[13]](https://doi.org/10.1109/ICDSNS62112.2024.10690922).<br>
+
+Pendekatan ini menggunakan class RecommenderNet dalam pembuatan model. 
+
+- Pembuatan class RecommenderNet
+  ```
+  !pip install tensorflow
+  import tensorflow as tf
+  from tensorflow import keras
+  from tensorflow.keras import layers
+
+  class RecommenderNet(tf.keras.Model):
+    # Insialisasi fungsi
+    def __init__(self, num_users, num_produk, embedding_size, **kwargs):
+      super(RecommenderNet, self).__init__(**kwargs)
+      self.num_users = num_users
+      self.num_produk = num_produk
+      self.embedding_size = embedding_size
+      self.user_embedding = layers.Embedding( # layer embedding user
+          num_users,
+          embedding_size,
+          embeddings_initializer = 'he_normal',
+          embeddings_regularizer = keras.regularizers.l2(1e-6)
+      )
+      self.user_bias = layers.Embedding(num_users, 1) # layer embedding user bias
+      self.produk_embedding = layers.Embedding( # layer embeddings produk
+          num_produk,
+          embedding_size,
+          embeddings_initializer = 'he_normal',
+          embeddings_regularizer = keras.regularizers.l2(1e-6)
+      )
+      self.produk_bias = layers.Embedding(num_produk, 1) # layer embedding produk bias
+
+    def call(self, inputs):
+      user_vector = self.user_embedding(inputs[:,0]) # memanggil layer embedding 1
+      user_bias = self.user_bias(inputs[:, 0]) # memanggil layer embedding 2
+      produk_vector = self.produk_embedding(inputs[:, 1]) # memanggil layer embedding 3
+      produk_bias = self.produk_bias(inputs[:, 1]) # memanggil layer embedding 4
+
+      dot_user_produk = tf.tensordot(user_vector, produk_vector, 2)
+
+      x = dot_user_produk + user_bias + produk_bias
+
+      return tf.nn.sigmoid(x) # activation sigmoid
+  ```
 - Inisialisasi model dan compile
+  ```
+  # inisialisasi model
+  model = RecommenderNet(num_users, num_produk, 50)
 
+  # model compile
+  model.compile(
+      loss = tf.keras.losses.BinaryCrossentropy(),
+      optimizer = keras.optimizers.Adam(learning_rate=0.001),
+      metrics=[tf.keras.metrics.RootMeanSquaredError()]
+  )
+  ```
+- Callback Early Stopper
+  ```
+  # callbacks
+  from tensorflow.keras.callbacks import EarlyStopping
+  early_stopper = EarlyStopping(monitor='val_root_mean_squared_error',
+                                patience=10,
+                                verbose=1,
+                                restore_best_weights=True)
+  ```
+  Callback Early Stopper berhasil diterapkan. Hal ini berguna untuk memantau proses training model, dan akan berhenti jika ```val_root_mean_squared_error``` tidak mengalami penurunan selama 10 epochs. Setelah berhenti, model pada epoch yang memiliki performa terbaik akan dipertahankan.
+  
 - Training terhadap model
+  ```
+  # Memulai training
+  history = model.fit(
+      x = x_train,
+      y = y_train,
+      batch_size = 8,
+      epochs = 100,
+      callbacks = [early_stopper],
+      validation_data = (x_val, y_val)
+  )
+  ```
 
-- Membuat variabel produk_not_rated sebagai daftar produk untuk direkomendasikan pada pengguna
+  ```
+  Epoch 48/100
+  2720/2720 ━━━━━━━━━━━━━━━━━━━━ 82s 17ms/step - loss: 0.5271 - root_mean_squared_error: 0.0584 - val_loss: 0.5825 - val_root_mean_squared_error: 0.1600
+  Epoch 48: early stopping
+  Restoring model weights from the end of the best epoch: 38.
+  ```
+  Output diatas adalah hasil proses training yang sudah selesai pada epochs ke-48 yang memiliki :
+  	- ```loss```: 0.5271
+  	- ```root_mean_squared_error```: 0.0584
+  	- ```val_loss```: 0.5825
+  	- ```val_root_mean_squared_error```: 0.1600
+
+- Mengambil sampel user
+  ```
+  user_id = df2.userID.sample(1).iloc[0]
+  produk_rated_by_user = df2[df2.userID == user_id]
+
+  produk_not_rated = df2[~df2['product'].isin(produk_rated_by_user.produk.values)]['product']
+  produk_not_rated = list(
+      set(produk_not_rated)
+      .intersection(set(produk_to_produk_encoded.keys()))
+  )
+
+  produk_not_rated = [[produk_to_produk_encoded.get(x)] for x in produk_not_rated]
+  user_encoder = user_to_user_encoded.get(user_id)
+  user_produk_array = np.hstack(
+      ([[user_encoder]] * len(produk_not_rated), produk_not_rated)
+  )
+  ```
 
 - Hasil rekomendasi produk
+  ```
+  ratings = model.predict(user_produk_array).flatten()
+
+  top_ratings_indices = ratings.argsort()[-10:][::-1]
+  recommended_produk_ids = [
+      produk_encoded_to_produk.get(produk_not_rated[x][0]) for x in top_ratings_indices
+  ]
+
+  print('Daftar recommendations produk untuk users: {}'.format(user_id))
+  print('===' * 9)
+  print('produk dengan rating tinggi dari user')
+  print('----' * 8)
+
+  top_produk_user = (
+      produk_rated_by_user.sort_values(
+          by = 'rating',
+          ascending=False
+      )
+      .head(5)
+      ['product'].values
+  )
+
+  df2_rows = df2[df2['product'].isin(top_produk_user)]
+  for row in df2_rows.itertuples():
+      print(row.product, ':', row.brand)
+
+  print('----' * 8)
+  print('Top 10 produk recommendation')
+  print('----' * 8)
+
+  recommended_produk = df2[df2['product'].isin(recommended_produk_ids)].drop_duplicates(subset='product')
+  for row in recommended_produk.itertuples():
+      print(row.product, ':', row.brand)
+  ```
+
+  
 ```
 736/736 ━━━━━━━━━━━━━━━━━━━━ 1s 1ms/step
 Daftar recommendations produk untuk users: 389
@@ -544,13 +692,121 @@ Tapioca Flour - Sabudana : nuttyyogi
 Body Deodorant - Ultra Sensual : wildstone
 Water & Juice Glass - Long : krosno-europe
 ```
+Output diatas adalah hasil dari ```Top-N Recommendation``` menggunakan Collaborative Filterting, yaitu model berhasil memberikan rekomendasi berdasarkan review rating dari user tertentu dan memberikan rekomendasi produk lainnya yang cocok untuk user tersebut.
+
+Pada contoh diatas, model berhasil memberikan rekomendasi produk untuk **user no.** ***389*** yang pernah memberikan rating tinggi ke produk dan brand:
+- Blue Set - Eau De Toilette + Deodorant : ulricdevarens
+- Dharwad Peda : sangamsweets
+- Green Tea Skin Clarifying Concentrate : plum
+- Rapid Reviver 6 Oil Nourish Deep Conditioner : lorealparis
+- Passion Femme Eau De Toilette : police
+  
+Model memberikan 10 rekomendasi produk dengan brand:<br>
+- Combo - Precision Safety Razor & 10 Feather Blades : bombayshavingcompany
+- Steel Lid See Through, Square Jars : yera
+- Easy Adult Diaper - Large : friends
+- Taft Power Wax : schwarzkopf
+- Wonder Diaper Pants - Large Size : huggies
+- Ultimate Choco Berry : ritebitemaxprotein
+- Charcoal Bath Soap : bombayshavingcompany
+- Tapioca Flour - Sabudana : nuttyyogi
+- Body Deodorant - Ultra Sensual : wildstone
+- Water & Juice Glass - Long : krosno-europe
+
 
 ## **Evaluation**<br>
-Untuk mengevaluasi kedua model rekomendasi ini, kita dapat menggunakan precision dan recall untuk mengukur akurasi prediksi.
-### **Content Based Filtering**
-```Precision untuk produk 'Dark Melody Coffee Beans Roasted': 1.00```
-### **Collaborative Filtering**
-![evaluasiCF](https://github.com/user-attachments/assets/9d90f243-88d4-4687-91a7-f4763a08f96b)
+Untuk mengevaluasi performa dari model, dibutuhkan pengukuran metriks untuk menilai model sistem rekomendasi produk yang telah dibuat.
+
+### **A. Content Based Filtering**
+Dalam evaluasi model, yang memakai pendekatan content based filtering, pada project ini, digunakan metriks ```precision``` untuk menilai performanya. Evaluasi yang menggunakan metrik ini, bertujuan untuk mengukur seberapa baik model merekomendasikan item yang relevan kepada pengguna berdasarkan fitur atau konten dari item yang mereka sukai sebelumnya.<br>
+- Precision didefinisikan sebagai proporsi item yang relevan di antara seluruh item yang direkomendasikan oleh model. Secara matematis, precision dirumuskan sebagai berikut:<br>
+
+  $$
+  \[
+  \text{Precision} = \frac{\text{True Positives (TP)}}{\text{True Positives (TP)} + \text{False Positives (FP)}}
+  \]​
+  $$
+ 
+   Dimana:<br>
+   - True Positives (TP) adalah jumlah item relevan yang berhasil direkomendasikan oleh model.<br>
+   - False Positives (FP) adalah jumlah item tidak relevan yang juga direkomendasikan.<br>
+- Kelebihan dan Keterbatasan Precision:<br>
+  - Kelebihan: Fokus pada relevansi hasil rekomendasi, sehingga cocok untuk aplikasi di mana kualitas rekomendasi lebih penting daripada kuantitas.
+  - Keterbatasan: Precision tidak mempertimbangkan item relevan yang tidak masuk dalam rekomendasi (mengabaikan recall).
+
+- Evaluasi performa model content based filtering
+  - Fungsi ```evaluate_precision```
+    ```
+    def evaluate_precision(nama_produk_test, rekom, df_cbf):
+        """
+        Fungsi untuk mengevaluasi precision rekomendasi.
+
+        Parameters:
+            nama_produk_test (str): Produk yang diminta.
+            rekom (list): Produk rekomendasi yang dihasilkan.
+            df_cbf (pd.DataFrame): DataFrame dengan informasi relevansi.
+
+        Returns:
+            float: Nilai precision untuk produk yang diuji.
+        """
+
+        # Mendapatkan relevansi produk rekomendasi
+        df_cbf['relevant'] = df_cbf['product'].isin(rekom).astype(int)
+
+        # Filter df_cbf untuk hanya menyertakan produk yang direkomendasikan
+        relevant_products_df = df_cbf[df_cbf['product'].isin(rekom)]
+
+        # Nilai target sebenarnya (relevansi) untuk produk yang direkomendasikan
+        y_true = relevant_products_df['relevant'].values
+        y_pred = [1] * len(y_true)
+
+        # Hitung precision (menangani zero division jika diperlukan)
+        precision = precision_score(y_true, y_pred, zero_division=0)
+        return precision
+    ```
+  - Hasil evaluasi model
+    ```
+    precision_value = evaluate_precision(nama_produk_test, rekom, df_cbf)
+    print(f"Precision untuk produk '{nama_produk_test}': {precision_value:.2f}")
+    ```
+    Output hasi performa evaluasi model:<br>
+    ```Precision untuk produk 'Dark Melody Coffee Beans Roasted': 1.00```<br>
+    
+    Dari informasi hasil evaluasi diatas, model memiliki skor presisi sebesar ```1.00``` atau 100%, dalam memberikan rekomendasi produk aneka pilihan kopi berdasarkan input random yang diberikan, yaitu ```Dark Melody Coffee Beans Roasted```. Hal ini menginterpretasikan bahwa model memiliki performa yang sangat baik dalam memberikan rekomendasi produk dalam pendekatan Content-Based Filtering.
+
+### **B. Collaborative Filtering**
+Dalam evaluasi model, yang memakai pendekatan collaborative filtering, pada project ini, digunakan metriks ```Root Mean Squared Error (RMSE)``` untuk menilai performanya. Evaluasi ini, bertujuan untuk mengukur sejauh mana prediksi model mendekati nilai aktual atau preferensi pengguna. RMSE adalah salah satu metrik yang umum digunakan untuk menilai performa dalam sistem rekomendasi berbasis collaborative filtering, baik itu user-based atau item-based.<br>
+- RMSE mengukur rata-rata selisih kuadrat antara nilai yang diprediksi oleh model dan nilai yang sebenarnya, kemudian menghitung akar kuadrat dari nilai tersebut. RMSE memberikan gambaran tentang seberapa besar kesalahan prediksi model dalam satuan yang sama dengan data asli. Secara matematis, RMSE dapat dihitung dengan rumus berikut:<br>
+
+$$
+\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2}
+$$
+
+   Dimana:<br>
+      - $$\( y_i \)$$: adalah nilai aktual atau preferensi pengguna terhadap item ke-i (rating yang diberikan). <br>
+      - $$\( \hat{y}_i \)$$: adalah nilai prediksi yang diberikan oleh model untuk item ke-i. <br>
+      - $$\( n \)$$: adalah jumlah total prediksi yang dihitung.<br>
+
+- Kelebihan dan Kelemahan RMSE<br>
+  - Kelebihan: RMSE memberikan penalti yang lebih besar terhadap kesalahan besar, sehingga dapat memberi indikasi yang jelas jika model menghasilkan prediksi yang jauh dari nilai aktual.<br>
+  - Kelemahan: RMSE sangat sensitif terhadap outlier. Jika ada beberapa prediksi yang sangat buruk, RMSE akan menjadi sangat besar, meskipun sebagian besar prediksi lainnya akurat.<br>
+
+- Hasil evaluasi performa model collaborative filtering<br>
+  - Plot History ```Root Mean Squared Error```
+      
+  ![evaluasiCF](https://github.com/user-attachments/assets/9d90f243-88d4-4687-91a7-f4763a08f96b)
+
+  Dari grafik RMSE evaluasi model diatas, didapat beberapa informasi berikut:<br>
+    1. Penurunan RMSE pada Data Latih (train):<br>
+        - RMSE pada data latih terus menurun seiring dengan bertambahnya epoch. Hal ini menunjukkan bahwa model semakin baik dalam memprediksi nilai pada data latih.
+        - Penurunan ini adalah indikasi bahwa model sedang belajar pola dalam data dengan baik.<br>
+    2. Penurunan RMSE pada Data Uji (test):<br>
+        - RMSE pada data uji juga menurun tetapi tidak secepat data latih, lalu mulai stabil setelah beberapa epoch. Ini menunjukkan bahwa model memiliki generalisasi yang baik pada data uji, namun dengan laju yang lebih lambat dibanding data latih.
+        - Stabilitas RMSE pada data uji mengindikasikan bahwa model tidak mengalami overfitting secara signifikan pada titik ini.
+    3. RMSE Rendah:<br>
+        Nilai RMSE yang terus menurun pada kedua dataset adalah hal yang positif, karena menunjukkan prediksi rating semakin mendekati nilai aktualnya.<br>
+	
+  Dari beberapa informasi insight grafik RMSE diatas, dapat disimpulkan bahwa model memiliki performa yang baik dalam memberikan rekomendasi produk dalam pendekatan Collaborative Filtering.
 
 ### **References**
 [1] Nianjiao, P., Xunyong Xiao, Wu Di, Li Ang, Manhong Wen. (2024). Design and implementation of an intelligent recommendation system for product information on an e-commerce platform based on machine learning. Proc. SPIE 12937, International Conference on Internet of Things and Machine Learning (IoTML 2023), 129371K. https://doi.org/10.1117/12.3013353<br>
@@ -563,7 +819,7 @@ Untuk mengevaluasi kedua model rekomendasi ini, kita dapat menggunakan precision
 
 [5] Patil, P., Kadam, S.U., Aruna, E.R., More, A., M., B.R., Rao, B.N.K. (2024). Recommendation system for e-commerce using collaborative filtering. Journal Européen des Systèmes Automatisés, Vol. 57, No. 4, pp. 1145-1153. https://doi.org/10.18280/jesa.570421<br>
 
-[6] M. Vinutha, R. B. Dayananda and A. Kamath. (2024). Personalized Skincare Product Recommendation System Using Content-Based Machine Learning. 4th International Conference on Intelligent Technologies (CONIT), Bangalore, India, 2024, pp. 1-6, doi: 10.1109/CONIT61985.2024.10626458.<br>
+[6] M. Vinutha, R. B. Dayananda and A. Kamath. (2024). Personalized Skincare Product Recommendation System Using Content-Based Machine Learning. 4th International Conference on Intelligent Technologies (CONIT), Bangalore, India, 2024, pp. 1-6. https://doi.org/10.1109/CONIT61985.2024.10626458<br>
 
 [7] Rakesh, Sribhashyam (2024) "Movie Recommendation System Using Content Based Filtering," Al-Bahir Journal for Engineering and Pure Sciences: Vol. 4: Iss. 1, Article 7.
 Available at: https://doi.org/10.55810/2313-0083.1043<br>
@@ -571,6 +827,14 @@ Available at: https://doi.org/10.55810/2313-0083.1043<br>
 [8] Ridwansyah, T., Subartini, B. ., & Sylviani, S. (2024). Penerapan Metode Content-Based Filtering pada Sistem Rekomendasi. Mathematical Sciences and Applications Journal, 4(2), 70-77. https://doi.org/10.22437/msa.v4i2.32136<br>
 
 [9] Salsabil, A. A., Setiawan, E. B., & Kurniawan, I. (2024). Content-based Filtering Movie Recommender System Using Semantic Approach with Recurrent Neural Network Classification and SGD. Kinetik: Game Technology, Information System, Computer Network, Computing, Electronics, and Control, 9(2), 193-202. https://doi.org/10.22219/kinetik.v9i2.1940<br>
+
+[10] https://doi.org/10.1109/IC2PCT60090.2024.10486625<br>
+
+[11] Shetty, A., Shetye, A., Shukla, P., Singh, A., & Vhatkar, S. (2024). A collaborative filtering-based recommender systems approach for multifarious applications. Journal of Electrical Systems, Vol. 20, No. 4s, pp. 478-485. https://doi.org/10.52783/jes.2059<br>
+
+[12] Wang, L. (2024). Commerce Product Recommendation Algorithm Based on Collaborative Filtering. Intelligent Computing Technology and Automation, Vol. 47, pp. 617 - 624. https://doi.org/10.3233/atde231237<br>
+
+[13] Shaik, S. T. (2024). A Hybrid Recommendation System using Collaborative Filtering with Apache Spark in E-Commerce. International Conference on Data Science and Network Security (ICDSNS), Tiptur, India, 2024, pp. 1-8. https://doi.org/10.1109/ICDSNS62112.2024.10690922.<br>
 
 
 
