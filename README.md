@@ -2,7 +2,7 @@
 
 
 ## **Project Overview**
-Sistem rekomendasi sangat penting dalam mempersonalisasi pengalaman pengguna di berbagai domain, seperti e-commerce, film, dan pasar kerja. Dalam proyek ini, kami membangun sistem rekomendasi produk, dari situs web e-commerce. Pendekatan yang kami gunakan adalah *Content-Based Filtering* dan *Collaborative Filtering*, dalam rangka membantu pengguna menemukan produk yang relevan berdasarkan preferensi/ riwayat pembelian dan perilaku penelusuran mereka.
+Sistem rekomendasi sangat penting dalam mempersonalisasi pengalaman pengguna di berbagai domain, seperti e-commerce, film, dan pasar kerja. Dalam proyek ini, dibangun sistem rekomendasi produk, dari situs web e-commerce. Pendekatan yang digunakan adalah *Content-Based Filtering* dan *Collaborative Filtering*, dalam rangka membantu pengguna menemukan produk yang relevan berdasarkan preferensi/ riwayat pembelian dan perilaku penelusuran mereka.
 
 1. Content-Based Filtering yaitu menganalisis karakteristik produk untuk memberikan rekomendasi berdasarkan kesamaan dengan produk lain.
 2. Collaborative Filtering yaitu menggunakan data interaksi pengguna untuk merekomendasikan produk yang diminati oleh pengguna serupa.
@@ -26,7 +26,7 @@ Salah satu faktor yang mendorong marketplace mengalami pertumbuhan yang pesat ad
 
 Sebelum membangun model, perlu dilakukan eksplorasi data untuk memahami struktur dataset dan kualitasnya.
 
-Dalam proyek ini, kami menggunakan dataset yang berasal dari database "Bigbasket", supermarket grosir online terbesar di India, yang dapat di akses pada link [ini](https://www.kaggle.com/datasets/amrit0611/big-basket-product-analysis/data).
+Proyek ini menggunakan dataset yang berasal dari database "Bigbasket", supermarket grosir online terbesar di India, yang dapat di akses pada link [ini](https://www.kaggle.com/datasets/amrit0611/big-basket-product-analysis/data).
 
 **1. Output 5 baris pertama dengan fungsi ```head``` pada dataset "BigBasketProducts.csv"**
 
